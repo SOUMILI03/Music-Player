@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="index.css"> 
+    <script src="https://kit.fontawesome.com/bc239bc58f.js" crossorigin="anonymous"></script>   
+</head>
+<body>
+    <div class="container">
+        <div class="musicplayer">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="until.jpg" class="song-img">
+            <h1>Until I Found You</h1>
+            <p>Em Beihold</p> <!-- Changed <p1> to <p>, as <p1> is invalid -->
+
+            <!-- Added ID to the audio element -->
+            <audio id="song">
+                <source src="Until I Found You (Em Beihold Version).mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+            <input type="range" value="0" id="progress">
+
+            <div class="control">
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let ctrlIcon = document.getElementById("ctrlIcon");
+
+        // When song metadata is loaded, set max progress bar value
+        song.onloadedmetadata = function() {
+            progress.max = song.duration;
+        };
+
+        // Function to play/pause the song
+        function playPause() {
+            if (song.paused) {
+                song.play();
+                ctrlIcon.classList.remove("fa-play");
+                ctrlIcon.classList.add("fa-pause");
+            } else {
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+        }
+
+        // Update progress bar as the song plays
+        song.ontimeupdate = function() {
+            progress.value = song.currentTime;
+        };
+
+        // Seek song when progress bar is changed
+        progress.oninput = function() {
+            song.currentTime = progress.value;
+        };
+    </script>  
+</body>
+</html>
